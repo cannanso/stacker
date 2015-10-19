@@ -1,14 +1,3 @@
-$(document).ready( function() {
-	$('.unanswered-getter').submit( function(event){
-		event.preventDefault();
-		// zero out results if previous search has run
-		$('.results').html('');
-		// get the value of the tags the user submitted
-		var tags = $(this).find("input[name='tags']").val();
-		getUnanswered(tags);
-	});
-});
-
 // this function takes the question object returned by StackOverflow 
 // and creates new result to be appended to DOM
 var showQuestion = function(question) {
@@ -89,5 +78,44 @@ var getUnanswered = function(tags) {
 	});
 };
 
+var getTopAnswerers = function(tag){
 
+	var request = {
+								tagged: tag,
+								site: 'stackoverflow',
+								period: 'month',
+							};
+	
+	var result = $.ajax({
+		url: "http://api.stackexchange.com/2.2/" + tag + "/jquery/top-answerers/",
+		data: request,
+		dataType: "jsonp",
+		type: "GET",
+		})
+		.done(function(result){
+			console.log('success');
+			console.log(result);
+		})
+		.fail(function(){
+			console.log('fail');
+		});
+	
+};
+
+$(document).ready( function() {
+	$('.unanswered-getter').submit( function(event){
+		event.preventDefault();
+		// zero out results if previous search has run
+		$('.results').html('');
+		// get the value of the tags the user submitted
+		var tags = $(this).find("input[name='tags']").val();
+		getUnanswered(tags);
+	});
+	$('.inspiration-getter').submit( function(event){
+		event.preventDefault();
+		$('.results').html('');
+		var tag = $(this).find("input[name='answerers']").val();
+		getTopAnswerers(tag);
+	});
+});
 
