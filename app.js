@@ -31,6 +31,16 @@ var showQuestion = function(question) {
 	return result;
 };
 
+var showUser = function(user){
+window.user = user;	
+	var result = $('.templates .answerer').clone();
+	result.find('.answerer-link a').attr('href', user.link).text(user.display_name);
+	result.find('.reputation').text(user.reputation);
+	result.find('img').attr({'src': user.profile_image, 'alt': user.display_name});
+
+	return result;
+};
+
 
 // this function takes the results object from StackOverflow
 // and creates info about search results to be appended to DOM
@@ -87,14 +97,20 @@ var getTopAnswerers = function(tag){
 							};
 	
 	var result = $.ajax({
-		url: "http://api.stackexchange.com/2.2/" + tag + "/jquery/top-answerers/",
+		url: "http://api.stackexchange.com/2.2/tags/" + request.tag + "/top-answerers/"+request.period,
 		data: request,
 		dataType: "jsonp",
 		type: "GET",
 		})
 		.done(function(result){
-			console.log('success');
-			console.log(result);
+			var searchResults = showSearchResults(request.tagged, result.items.length);
+			
+			$('.search-results').html(searchResults);
+
+			$.each(result.items, function(i, item){
+				var user = showUser(item.user);
+				$('.results').append(user);
+			});
 		})
 		.fail(function(){
 			console.log('fail');
