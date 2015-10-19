@@ -1,3 +1,15 @@
+@import 'normalize.css';
+
+/* apply a natural box layout model to all elements, but allowing components to change */
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+/* page styles */
+
 .container {
 	margin: 3em auto;
 	width: 600px;
@@ -20,6 +32,7 @@
   -o-background-size: cover;
   background-size: cover;
   margin-right: 1em;
+  margin-bottom: 1em;
   border-radius: 5px;
 }
 
@@ -38,6 +51,10 @@
 	border: 1px solid black;
 	padding: 5px;
 	margin: 0 auto 1em auto;
+}
+
+.result dt {
+	font-weight: bold;
 }
 
 .error {
